@@ -11,14 +11,22 @@ const Login: React.FC = () => {
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault(); 
 
     if (!email || !password) {
-      alert('Por favor, ingresa tu correo y contraseña para continuar.');
+      setError('Ingresa tu correo y contraseña para continuar.');
       return;
     }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError('Ingresa un correo válido, por ejemplo nombre@correo.cl.');
+      return;
+    }
+
+    setError('');
 
     // Definimos qué correo activa el rol de administrador
     // Guardamos la sesión y el rol detectado automáticamente en el navegador
@@ -104,13 +112,19 @@ const Login: React.FC = () => {
                     <IonRouterLink routerLink="/recuperar">¿Olvidaste tu contraseña?</IonRouterLink>
                   </div>
 
+                  {error && (
+                    <IonText color="danger">
+                      <p style={{ fontSize: '0.85rem' }}>{error}</p>
+                    </IonText>
+                  )}
+
                   {/* Único botón de ingresar limpio */}
                   <IonButton type="submit" expand="block" color="success" className="btn-ingresar">
                     Ingresar
                   </IonButton>
 
-                  <IonButton expand="block" fill="outline" color="dark" className="btn-google" style={{ marginTop: '10px' }}>
-                    Continuar con Google
+                  <IonButton expand="block" fill="outline" color="dark" className="btn-google" style={{ marginTop: '10px' }} disabled>
+                    Continuar con Google (próximamente)
                   </IonButton>
 
                   <div className="ion-text-center register-link">
