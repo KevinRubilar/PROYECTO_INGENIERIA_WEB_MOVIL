@@ -37,7 +37,7 @@ const CrearCuenta: React.FC = () => {
 
     // Redirección automática según el rol detectado
     if (roleType === 'admin') {
-      navigate('/admin/solicitudes');
+      navigate('/admin/resumen');
     } else {
       navigate('/catalogo');
     }
