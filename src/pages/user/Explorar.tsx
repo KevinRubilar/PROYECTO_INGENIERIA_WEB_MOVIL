@@ -1,78 +1,16 @@
 import React, { useState } from 'react';
-import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonInput, IonButton, IonIcon } from '@ionic/react';
+import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonInput, IonButton, IonIcon, IonToast, useIonRouter } from '@ionic/react';
 import { searchOutline, documentTextOutline, notificationsOutline, personOutline, heart } from 'ionicons/icons';
+import { obtenerAnimales, alternarFavorito } from '../../services/animalesService';
+import { estaAutenticado } from '../../services/authService';
 import './Explorar.css';
 
-interface Animal {
-  id: number;
-  name: string;
-  species: string;
-  gender: string;
-  age: string;
-  size: string;
-  status: string;
-  tags: string[];
-  description: string;
-  shelter: string;
-  location: string;
-  distance: string;
-  health: string;
-  image: string;
-}
-
-const ANIMALS_DATA: Animal[] = [
-  {
-    id: 1,
-    name: "Milo",
-    species: "Gato mestizo",
-    gender: "Macho",
-    age: "2 años",
-    size: "Mediano",
-    status: "DISPONIBLE",
-    tags: ["Sociable", "Tranquilo", "Energía media"],
-    description: "Compañero sociable que disfruta las siestas al sol y busca un hogar estable y amoroso.",
-    shelter: "Huellas Felices",
-    location: "Valparaíso",
-    distance: "a 14 km",
-    health: "Salud: vacunas, desparasitación y esterilización al día.",
-    image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    id: 2,
-    name: "Luna",
-    species: "Gato naranja",
-    gender: "Hembra",
-    age: "4 años",
-    size: "Mediano",
-    status: "DISPONIBLE",
-    tags: ["Juguetona", "Cariñosa", "Curiosa"],
-    description: "Una gata llena de energía que adora jugar con juguetes colgantes y recibir mimos en la barbilla.",
-    shelter: "Refugio Patitas",
-    location: "Viña del Mar",
-    distance: "a 18 km",
-    health: "Salud: esterilizada, vacunas al día y test negativo.",
-    image: "https://images.unsplash.com/photo-1573865526739-10659fec78a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    id: 3,
-    name: "Rocky",
-    species: "Perro mestizo",
-    gender: "Macho",
-    age: "1 año",
-    size: "Grande",
-    status: "DISPONIBLE",
-    tags: ["Muy activo", "Fiel", "Protector"],
-    description: "Rocky es un cachorro grande con mucha energía, ideal para personas activas que disfruten salir a correr.",
-    shelter: "Amigos Peludos",
-    location: "Limache",
-    distance: "a 5 km",
-    health: "Salud: vacunado y desparasitado.",
-    image: "https://images.unsplash.com/photo-1543466835-00a7907e9de1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-  }
-];
+const ANIMALS_DATA = obtenerAnimales();
 
 const Explorar: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [mensaje, setMensaje] = useState('');
+  const router = useIonRouter();
 
   // Animal actual y siguiente (usando operador módulo para hacer un ciclo infinito)
   const currentAnimal = ANIMALS_DATA[currentIndex];
@@ -80,6 +18,15 @@ const Explorar: React.FC = () => {
 
   const handleNextAnimal = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % ANIMALS_DATA.length);
+  };
+
+  const handleFavorito = () => {
+    if (!estaAutenticado()) {
+      router.push('/login');
+      return;
+    }
+    const agregado = alternarFavorito(currentAnimal.id);
+    setMensaje(agregado ? `${currentAnimal.name} se agregó a tus favoritos` : `${currentAnimal.name} se quitó de tus favoritos`);
   };
 
   return (
@@ -98,19 +45,19 @@ const Explorar: React.FC = () => {
               </div>
 
               <div className="nav-menu">
-                <div className="nav-item active">
+                <div className="nav-item active" onClick={() => router.push('/catalogo')}>
                   <IonIcon icon={searchOutline} />
                   <span>Explorar</span>
                 </div>
-                <div className="nav-item">
+                <div className="nav-item" onClick={() => router.push('/usuario/postulaciones')}>
                   <IonIcon icon={documentTextOutline} />
                   <span>Postulaciones</span>
                 </div>
-                <div className="nav-item">
+                <div className="nav-item" onClick={() => router.push('/usuario/alertas')}>
                   <IonIcon icon={notificationsOutline} />
                   <span>Alertas</span>
                 </div>
-                <div className="nav-item">
+                <div className="nav-item" onClick={() => router.push('/usuario/perfil')}>
                   <IonIcon icon={personOutline} />
                   <span>Perfil</span>
                 </div>
@@ -185,11 +132,11 @@ const Explorar: React.FC = () => {
                     </IonButton>
 
                     <div className="action-buttons">
-                      <IonButton fill="outline" color="dark" className="btn-secondary">
+                      <IonButton fill="outline" color="dark" className="btn-secondary" onClick={handleFavorito}>
                         <IonIcon icon={heart} color="danger" slot="start" />
                         Añadir a favoritos
                       </IonButton>
-                      <IonButton fill="outline" color="dark" className="btn-secondary">
+                      <IonButton fill="outline" color="dark" className="btn-secondary" routerLink={`/animales/${currentAnimal.id}/apadrinar`}>
                         Apadrinar
                       </IonButton>
                     </div>
@@ -209,7 +156,7 @@ const Explorar: React.FC = () => {
                     <p className="animal-stats-small">{nextAnimal.species} • {nextAnimal.gender} • {nextAnimal.age}</p>
                     <p className="text-muted-small">{nextAnimal.shelter} • {nextAnimal.location} • {nextAnimal.distance}</p>
                     
-                    <IonButton expand="block" fill="outline" color="dark" className="btn-ver-ficha" onClick={(e) => { e.stopPropagation(); handleNextAnimal(); }}>
+                    <IonButton expand="block" fill="outline" color="dark" className="btn-ver-ficha" onClick={(e) => { e.stopPropagation(); router.push(`/animales/${nextAnimal.id}`); }}>
                       Ver ficha de {nextAnimal.name} →
                     </IonButton>
                   </div>
@@ -223,24 +170,25 @@ const Explorar: React.FC = () => {
 
         {/* --- BARRA DE NAVEGACIÓN INFERIOR (Solo para móviles) --- */}
         <div className="mobile-bottom-nav">
-          <div className="nav-item-mobile active">
+          <div className="nav-item-mobile active" onClick={() => router.push('/catalogo')}>
             <IonIcon icon={searchOutline} />
             <span>Explorar</span>
           </div>
-          <div className="nav-item-mobile">
+          <div className="nav-item-mobile" onClick={() => router.push('/usuario/postulaciones')}>
             <IonIcon icon={documentTextOutline} />
             <span>Postulaciones</span>
           </div>
-          <div className="nav-item-mobile">
+          <div className="nav-item-mobile" onClick={() => router.push('/usuario/alertas')}>
             <IonIcon icon={notificationsOutline} />
             <span>Alertas</span>
           </div>
-          <div className="nav-item-mobile">
+          <div className="nav-item-mobile" onClick={() => router.push('/usuario/perfil')}>
             <IonIcon icon={personOutline} />
             <span>Perfil</span>
           </div>
         </div>
 
+        <IonToast isOpen={mensaje !== ''} message={mensaje} duration={2000} onDidDismiss={() => setMensaje('')} />
       </IonContent>
     </IonPage>
   );

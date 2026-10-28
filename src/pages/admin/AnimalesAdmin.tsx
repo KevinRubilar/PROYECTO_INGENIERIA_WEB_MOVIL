@@ -42,7 +42,7 @@ const AnimalesAdmin: React.FC = () => {
                 <span className="admin-logo-subtitle">PANEL DEL REFUGIO</span>
 
                 <div className="admin-nav-menu">
-                  <div className="admin-nav-item" onClick={() => navigate('/admin/solicitudes')} style={{ cursor: 'pointer' }}>
+                  <div className="admin-nav-item" onClick={() => navigate('/admin/resumen')} style={{ cursor: 'pointer' }}>
                     <IonIcon icon={gridOutline} />
                     <span>Resumen</span>
                   </div>
@@ -79,7 +79,7 @@ const AnimalesAdmin: React.FC = () => {
                   <h1 className="admin-page-title">Animales</h1>
                   <p className="admin-page-subtitle">Crea, publica y mantiene cada ficha de rescate.</p>
                 </div>
-                <IonButton color="success" className="btn-nueva-ficha">
+                <IonButton color="success" className="btn-nueva-ficha" routerLink="/admin/animales/nuevo">
                   <IonIcon icon={addOutline} slot="start" />
                   Nueva ficha
                 </IonButton>
@@ -218,7 +218,7 @@ const AnimalesAdmin: React.FC = () => {
 
         {/* --- BARRA INFERIOR MÓVIL ADMIN --- */}
         <div className="admin-mobile-nav">
-          <div className="admin-nav-item-mobile" onClick={() => navigate('/admin/solicitudes')} style={{ cursor: 'pointer' }}>
+          <div className="admin-nav-item-mobile" onClick={() => navigate('/admin/resumen')} style={{ cursor: 'pointer' }}>
             <IonIcon icon={gridOutline} />
             <span>Resumen</span>
           </div>

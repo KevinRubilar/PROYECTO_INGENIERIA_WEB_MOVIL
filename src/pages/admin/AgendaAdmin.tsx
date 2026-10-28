@@ -35,7 +35,7 @@ const AgendaAdmin: React.FC = () => {
                 </div>
                 <span className="admin-logo-subtitle">PANEL DEL REFUGIO</span>
                 <div className="admin-nav-menu">
-                  <div className="admin-nav-item" onClick={() => navigate('/admin/solicitudes')} style={{ cursor: 'pointer' }}>
+                  <div className="admin-nav-item" onClick={() => navigate('/admin/resumen')} style={{ cursor: 'pointer' }}>
                     <IonIcon icon={gridOutline} />
                     <span>Resumen</span>
                   </div>
@@ -111,7 +111,7 @@ const AgendaAdmin: React.FC = () => {
 
         {/* --- BARRA INFERIOR MÓVIL ADMIN --- */}
         <div className="admin-mobile-nav">
-          <div className="admin-nav-item-mobile" onClick={() => navigate('/admin/solicitudes')} style={{ cursor: 'pointer' }}>
+          <div className="admin-nav-item-mobile" onClick={() => navigate('/admin/resumen')} style={{ cursor: 'pointer' }}>
             <IonIcon icon={gridOutline} />
             <span>Resumen</span>
           </div>

@@ -41,7 +41,7 @@ const SolicitudesAdmin: React.FC = () => {
                 <span className="admin-logo-subtitle">PANEL DEL REFUGIO</span>
 
                 <div className="admin-nav-menu">
-                  <div className="admin-nav-item" onClick={() => navigate('/admin/solicitudes')} style={{ cursor: 'pointer' }}>
+                  <div className="admin-nav-item" onClick={() => navigate('/admin/resumen')} style={{ cursor: 'pointer' }}>
                     <IonIcon icon={gridOutline} />
                     <span>Resumen</span>
                   </div>
@@ -156,7 +156,7 @@ const SolicitudesAdmin: React.FC = () => {
                                 Ver agenda
                               </IonButton>
                             ) : (
-                              <IonButton color="success" className="btn-action-table">
+                              <IonButton color="success" className="btn-action-table" routerLink={`/admin/solicitudes/${sol.id}`}>
                                 {sol.accion}
                               </IonButton>
                             )}
@@ -192,8 +192,8 @@ const SolicitudesAdmin: React.FC = () => {
                   </div>
                   <p className="mobile-card-detail">Vivienda: departamento - sin mascotas</p>
                   <div className="mobile-card-actions">
-                    <IonButton color="success" expand="block" className="btn-action-mobile">Pasar a revisión</IonButton>
-                    <IonButton fill="outline" color="dark" expand="block" className="btn-action-mobile">Ver ficha</IonButton>
+                    <IonButton color="success" expand="block" className="btn-action-mobile" routerLink="/admin/solicitudes/1">Pasar a revisión</IonButton>
+                    <IonButton fill="outline" color="dark" expand="block" className="btn-action-mobile" routerLink="/admin/solicitudes/1">Ver ficha</IonButton>
                   </div>
                 </div>
 
@@ -210,8 +210,8 @@ const SolicitudesAdmin: React.FC = () => {
                   </div>
                   <p className="mobile-card-detail">RUT •• 456.789-0 - contacto protegido</p>
                   <div className="mobile-card-actions">
-                    <IonButton color="success" expand="block" className="btn-action-mobile">Preseleccionar</IonButton>
-                    <IonButton fill="outline" color="dark" expand="block" className="btn-action-mobile">Ver ficha</IonButton>
+                    <IonButton color="success" expand="block" className="btn-action-mobile" routerLink="/admin/solicitudes/2">Preseleccionar</IonButton>
+                    <IonButton fill="outline" color="dark" expand="block" className="btn-action-mobile" routerLink="/admin/solicitudes/2">Ver ficha</IonButton>
                   </div>
                 </div>
                 
@@ -233,7 +233,7 @@ const SolicitudesAdmin: React.FC = () => {
 
         {/* --- BARRA INFERIOR MÓVIL ADMIN --- */}
         <div className="admin-mobile-nav">
-          <div className="admin-nav-item-mobile" onClick={() => navigate('/admin/solicitudes')} style={{ cursor: 'pointer' }}>
+          <div className="admin-nav-item-mobile" onClick={() => navigate('/admin/resumen')} style={{ cursor: 'pointer' }}>
             <IonIcon icon={gridOutline} />
             <span>Resumen</span>
           </div>
