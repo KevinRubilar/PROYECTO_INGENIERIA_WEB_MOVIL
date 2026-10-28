@@ -13,6 +13,7 @@ import '@ionic/react/css/padding.css';
 
 /* Importación de tus pantallas de Auth y User */
 import Home from './pages/home/home';
+import Refugios from './pages/home/Refugios';
 import Login from './pages/auth/Login';
 import CrearCuenta from './pages/auth/CrearCuenta';
 import RecuperarContrasena from './pages/auth/RecuperarContrasena';
@@ -52,6 +53,7 @@ const App: React.FC = () => (
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<CrearCuenta />} />
         <Route path="/recuperar" element={<RecuperarContrasena />} />
+        <Route path="/refugios" element={<Refugios />} />
         <Route path="/catalogo" element={<Explorar />} />
         <Route path="/animales/:id" element={<DetalleAnimal />} />
 

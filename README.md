@@ -478,6 +478,7 @@ La columna **Estado** indica si la ruta ya está implementada en el frontend o s
 | `/login` | Inicio de sesión | Permite ingresar mediante credenciales y redirige a la experiencia correspondiente al rol. | Implementada |
 | `/registro` | Registro | Permite crear una cuenta con rol Usuario. | Implementada |
 | `/recuperar` | Recuperar contraseña | Permite solicitar un enlace temporal para restablecer la contraseña. | Implementada |
+| `/refugios` | Refugios y organizaciones | Presenta los refugios que publican animales, su comuna y cuántos animales tienen disponibles. | Implementada |
 | `/catalogo` | Explorar animales | Presenta animales disponibles, nombre y ubicación general del refugio, selector de ubicación y filtros por radio. | Implementada |
 | `/animales/:id` | Detalle del animal | Presenta la ficha pública, información sanitaria autorizada, refugio responsable, comuna, región, distancia aproximada y acciones disponibles. | Implementada |
 
