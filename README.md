@@ -467,50 +467,55 @@ Los siguientes son los **cinco RNF principales y evaluables** de EP 1.1. Los cri
 
 ### 1. Rutas principales y secundarias
 
-La aplicación considera rutas públicas y rutas protegidas. Las rutas protegidas deberán comprobar la sesión y el rol tanto en el frontend como en el backend.
+La aplicación considera rutas públicas y rutas protegidas. Las rutas protegidas comprueban la sesión y el rol en el frontend mediante `ProtectedRoute` (`src/routes/ProtectedRoute.tsx`); al integrar la API, el backend repetirá esta comprobación. Si una persona sin sesión intenta entrar a una ruta protegida, se redirige a `/login` y, tras iniciar sesión, vuelve a la vista que intentaba abrir.
+
+La columna **Estado** indica si la ruta ya está implementada en el frontend o si se incorporará en la Entrega Parcial 2, junto con el backend.
 
 #### Rutas públicas
 
-| Ruta | Vista | Descripción |
-|---|---|---|
-| `/login` | Inicio de sesión | Permite ingresar mediante credenciales y redirige a la experiencia correspondiente al rol. |
-| `/registro` | Registro | Permite crear una cuenta con rol Usuario. |
-| `/catalogo` | Explorar animales | Presenta animales disponibles, nombre y ubicación general del refugio, selector de ubicación y filtros por radio. |
-| `/animales/:id` | Detalle del animal | Presenta la ficha pública, información sanitaria autorizada, refugio responsable, comuna, región, distancia aproximada y acciones disponibles. |
+| Ruta | Vista | Descripción | Estado |
+|---|---|---|---|
+| `/login` | Inicio de sesión | Permite ingresar mediante credenciales y redirige a la experiencia correspondiente al rol. | Implementada |
+| `/registro` | Registro | Permite crear una cuenta con rol Usuario. | Implementada |
+| `/recuperar` | Recuperar contraseña | Permite solicitar un enlace temporal para restablecer la contraseña. | Implementada |
+| `/catalogo` | Explorar animales | Presenta animales disponibles, nombre y ubicación general del refugio, selector de ubicación y filtros por radio. | Implementada |
+| `/animales/:id` | Detalle del animal | Presenta la ficha pública, información sanitaria autorizada, refugio responsable, comuna, región, distancia aproximada y acciones disponibles. | Implementada |
 
 #### Rutas protegidas del Usuario
 
-| Ruta | Vista | Descripción |
-|---|---|---|
-| `/animales/:id/postular` | Formulario de postulación | Permite completar Datos, Motivación y Confirmación. |
-| `/usuario/postulaciones` | Mis postulaciones | Presenta las solicitudes propias y su estado actual. |
-| `/usuario/postulaciones/:id` | Detalle de postulación | Presenta el seguimiento de una solicitud propia. |
-| `/usuario/postulaciones/:id/coordinar` | Coordinación de entrevista | Permite al Usuario con postulación aceptada en proceso consultar si la cita está por confirmar, confirmada o requiere otro horario, y responder a la propuesta. |
-| `/usuario/postulaciones/:id/entrevista` | Entrevista confirmada | Presenta el resumen de una cita confirmada con animal, refugio, fecha, hora, modalidad, lugar e instrucciones autorizadas. |
-| `/animales/:id/apadrinar` | Apadrinar | Permite seleccionar frecuencia y monto antes de continuar al proveedor de pago. |
-| `/usuario/apadrinamientos` | Mis apadrinamientos | Presenta aportes confirmados y renovaciones mensuales propias. |
-| `/usuario/alertas` | Alertas | Presenta las notificaciones de la cuenta; las notificaciones accionables permiten acceder directamente a la postulación, coordinación o entrevista relacionada. |
-| `/usuario/perfil` | Perfil | Presenta los datos básicos y accesos a favoritos, edición de información, contraseña, apariencia, privacidad y cierre de sesión. |
-| `/usuario/favoritos` | Mis favoritos | Presenta los animales guardados por el Usuario sin crear una postulación. |
-| `/usuario/perfil/editar` | Editar información | Permite actualizar datos personales editables de la cuenta. |
-| `/usuario/perfil/contrasena` | Cambiar contraseña | Permite modificar la contraseña desde una sesión autenticada mediante validaciones de seguridad. |
-| `/usuario/perfil/apariencia` | Apariencia | Permite seleccionar y conservar preferencias visuales disponibles de la interfaz. |
-| `/usuario/perfil/privacidad` | Privacidad de datos | Informa qué datos personales utiliza PatitasGo, sus finalidades y las opciones de gestión disponibles para la cuenta. |
+| Ruta | Vista | Descripción | Estado |
+|---|---|---|---|
+| `/animales/:id/postular` | Formulario de postulación | Permite completar Datos, Motivación y Confirmación. | Implementada |
+| `/animales/:id/postulacion-enviada` | Postulación enviada | Confirma el envío de la postulación y su estado inicial `PENDIENTE`. | Implementada |
+| `/usuario/postulaciones` | Mis postulaciones | Presenta las solicitudes propias y su estado actual. | Implementada |
+| `/usuario/postulaciones/:id` | Detalle de postulación | Presenta el seguimiento de una solicitud propia. | Implementada |
+| `/usuario/postulaciones/:id/coordinar` | Coordinación de entrevista | Permite al Usuario con postulación aceptada en proceso consultar si la cita está por confirmar, confirmada o requiere otro horario, y responder a la propuesta. | Planificada (EP2) |
+| `/usuario/postulaciones/:id/entrevista` | Entrevista confirmada | Presenta el resumen de una cita confirmada con animal, refugio, fecha, hora, modalidad, lugar e instrucciones autorizadas. | Planificada (EP2) |
+| `/animales/:id/apadrinar` | Apadrinar | Permite seleccionar frecuencia y monto antes de continuar al proveedor de pago. | Implementada |
+| `/usuario/apadrinamientos` | Mis apadrinamientos | Presenta aportes confirmados y renovaciones mensuales propias. | Planificada (EP2) |
+| `/usuario/alertas` | Alertas | Presenta las notificaciones de la cuenta; las notificaciones accionables permiten acceder directamente a la postulación, coordinación o entrevista relacionada. | Implementada |
+| `/usuario/perfil` | Perfil | Presenta los datos básicos y accesos a favoritos, edición de información, contraseña, apariencia, privacidad y cierre de sesión. | Implementada |
+| `/usuario/favoritos` | Mis favoritos | Presenta los animales guardados por el Usuario sin crear una postulación. | Implementada |
+| `/usuario/perfil/editar` | Editar información | Permite actualizar datos personales editables de la cuenta. | Planificada (EP2) |
+| `/usuario/perfil/contrasena` | Cambiar contraseña | Permite modificar la contraseña desde una sesión autenticada mediante validaciones de seguridad. | Planificada (EP2) |
+| `/usuario/perfil/apariencia` | Apariencia | Permite seleccionar y conservar preferencias visuales disponibles de la interfaz. | Planificada (EP2) |
+| `/usuario/perfil/privacidad` | Privacidad de datos | Informa qué datos personales utiliza PatitasGo, sus finalidades y las opciones de gestión disponibles para la cuenta. | Planificada (EP2) |
 
 #### Rutas protegidas del Administrador
 
-| Ruta | Vista | Descripción |
-|---|---|---|
-| `/admin/resumen` | Resumen | Presenta indicadores operativos y accesos a tareas frecuentes. |
-| `/admin/postulaciones` | Gestión de solicitudes | Permite listar y filtrar las postulaciones recibidas. |
-| `/admin/postulaciones/:id` | Detalle de solicitud | Permite revisar respuestas y efectuar una transición válida. |
-| `/admin/postulaciones/:id/coordinar` | Coordinación, entrevista y cierre | Permite confirmar o proponer horario, registrar asistencia y resultado, verificar la identidad y cerrar la adopción o liberar al animal. |
-| `/admin/animales` | Gestión de animales | Permite consultar y mantener las fichas del refugio. |
-| `/admin/animales/nuevo` | Nueva ficha | Permite registrar un animal en estado borrador. |
-| `/admin/animales/:id/editar` | Editar ficha | Permite modificar, publicar o archivar una ficha existente. |
-| `/admin/animales/:id/salud` | Historial médico | Permite consultar y registrar eventos médicos. |
-| `/admin/apadrinamientos` | Aportes confirmados | Permite consultar los aportes asociados a animales del refugio. |
-| `/admin/perfil` | Perfil administrativo | Presenta los datos de cuenta y la opción de cerrar sesión. |
+| Ruta | Vista | Descripción | Estado |
+|---|---|---|---|
+| `/admin/resumen` | Resumen | Presenta indicadores operativos y accesos a tareas frecuentes. | Implementada |
+| `/admin/solicitudes` | Gestión de solicitudes | Permite listar y filtrar las postulaciones recibidas. | Implementada |
+| `/admin/solicitudes/:id` | Detalle de solicitud | Permite revisar respuestas y efectuar una transición válida. | Implementada |
+| `/admin/solicitudes/:id/coordinar` | Coordinación, entrevista y cierre | Permite confirmar o proponer horario, registrar asistencia y resultado, verificar la identidad y cerrar la adopción o liberar al animal. | Planificada (EP2) |
+| `/admin/agenda` | Agenda | Presenta las entrevistas del refugio por día, con días anteriores y próximos. | Implementada |
+| `/admin/animales` | Gestión de animales | Permite consultar y mantener las fichas del refugio. | Implementada |
+| `/admin/animales/nuevo` | Nueva ficha | Permite registrar un animal en estado borrador. | Implementada |
+| `/admin/animales/:id/editar` | Editar ficha | Permite modificar, publicar o archivar una ficha existente. | Planificada (EP2) |
+| `/admin/animales/:id/salud` | Historial médico | Permite consultar y registrar eventos médicos. | Planificada (EP2) |
+| `/admin/apadrinamientos` | Aportes confirmados | Permite consultar los aportes asociados a animales del refugio. | Planificada (EP2) |
+| `/admin/perfil` | Perfil administrativo | Presenta los datos de cuenta y la opción de cerrar sesión. | Implementada |
 
 ### 2. Relaciones jerárquicas entre vistas
 
@@ -749,9 +754,9 @@ Por ejemplo:
 
 /admin/resumen
 
-/admin/postulaciones
+/admin/solicitudes
 
-/admin/postulaciones/:id/coordinar
+/admin/solicitudes/:id/coordinar
 
 /admin/animales
 
