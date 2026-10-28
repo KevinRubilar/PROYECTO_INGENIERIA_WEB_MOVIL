@@ -1165,6 +1165,16 @@ Rutas protegidas
 
 La separación también simplifica el enrutamiento con `IonReactRouter`, la implementación de guardas de ruta y la validación de permisos en los controladores de Express.js. La autorización definitiva deberá permanecer en el backend.
 
+### Escalabilidad
+
+La arquitectura frontend se organiza para crecer sin reestructurar la navegación existente:
+
+- **Rutas agrupadas por rol.** Las vistas protegidas se agrupan bajo prefijos (`/usuario/*` y `/admin/*`). Una nueva funcionalidad se incorpora como ruta secundaria de su grupo sin modificar la navegación principal (Explorar, Postulaciones, Alertas y Perfil para el Usuario; Resumen, Solicitudes, Animales y Perfil para el Administrador).
+- **Guardia de rutas reutilizable.** `ProtectedRoute` recibe el rol permitido como parámetro, por lo que proteger una vista nueva o incorporar un rol adicional no requiere duplicar lógica de acceso.
+- **Separación por capas.** El código se divide en `pages` (vistas), `components` (elementos reutilizables como la tarjeta de animal y la barra de navegación), `routes` (control de acceso) y `services` (acceso a datos). Las vistas no dependen de dónde provienen los datos: en esta etapa los servicios entregan datos de ejemplo y en la integración con la API REST de Express.js solo se reemplaza su implementación.
+- **Navegación adaptable por dispositivo.** La misma estructura de rutas se presenta con barra inferior en móvil y menú lateral en web, de modo que una vista nueva queda disponible en ambas versiones al registrarse una sola vez.
+- **Estados centralizados.** Los estados de postulación, cita y animal se definen como valores fijos y compartidos, lo que permite agregar nuevos estados o transiciones sin modificar cada vista que los muestra.
+
 ---
 
 ## Bocetos UI/UX
