@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonInput, IonButton, IonIcon, IonToast, useIonRouter } from '@ionic/react';
-import { searchOutline, documentTextOutline, notificationsOutline, personOutline, heart } from 'ionicons/icons';
+import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonInput, IonButton, IonIcon, IonToast, IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonList, IonItem, IonSelect, IonSelectOption, useIonRouter } from '@ionic/react';
+import { heart } from 'ionicons/icons';
 import { obtenerAnimales, alternarFavorito } from '../../services/animalesService';
 import { estaAutenticado } from '../../services/authService';
+import { MenuLateralUsuario, BarraInferiorUsuario } from '../../components/MenuUsuario';
 import './Explorar.css';
 
 const ANIMALS_DATA = obtenerAnimales();
@@ -10,14 +11,32 @@ const ANIMALS_DATA = obtenerAnimales();
 const Explorar: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [mensaje, setMensaje] = useState('');
+  const [busqueda, setBusqueda] = useState('');
+  const [especie, setEspecie] = useState('TODAS');
+  const [tamano, setTamano] = useState('TODOS');
+  const [filtrosAbiertos, setFiltrosAbiertos] = useState(false);
   const router = useIonRouter();
 
+  const texto = busqueda.trim().toLowerCase();
+  const animalesFiltrados = ANIMALS_DATA.filter((a) =>
+    (texto === '' || `${a.name} ${a.species} ${a.shelter}`.toLowerCase().includes(texto)) &&
+    (especie === 'TODAS' || a.species.toUpperCase().startsWith(especie)) &&
+    (tamano === 'TODOS' || a.size.toUpperCase() === tamano)
+  );
+  const indice = animalesFiltrados.length > 0 ? currentIndex % animalesFiltrados.length : 0;
+
   // Animal actual y siguiente (usando operador módulo para hacer un ciclo infinito)
-  const currentAnimal = ANIMALS_DATA[currentIndex];
-  const nextAnimal = ANIMALS_DATA[(currentIndex + 1) % ANIMALS_DATA.length];
+  const currentAnimal = animalesFiltrados[indice];
+  const nextAnimal = animalesFiltrados[(indice + 1) % animalesFiltrados.length];
 
   const handleNextAnimal = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % ANIMALS_DATA.length);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % animalesFiltrados.length);
+  };
+
+  const limpiarFiltros = () => {
+    setEspecie('TODAS');
+    setTamano('TODOS');
+    setBusqueda('');
   };
 
   const handleFavorito = () => {
@@ -37,39 +56,7 @@ const Explorar: React.FC = () => {
             
             {/* --- BARRA LATERAL (Desktop) --- */}
             <IonCol size="12" sizeMd="3" sizeLg="2.5" className="sidebar">
-              <div className="sidebar-header">
-                <div className="logo">
-                  <span className="dot"></span> PatitasGo
-                </div>
-                <span className="logo-subtitle">ADOPCIÓN Y RESCATE</span>
-              </div>
-
-              <div className="nav-menu">
-                <div className="nav-item active" onClick={() => router.push('/catalogo')}>
-                  <IonIcon icon={searchOutline} />
-                  <span>Explorar</span>
-                </div>
-                <div className="nav-item" onClick={() => router.push('/usuario/postulaciones')}>
-                  <IonIcon icon={documentTextOutline} />
-                  <span>Postulaciones</span>
-                </div>
-                <div className="nav-item" onClick={() => router.push('/usuario/alertas')}>
-                  <IonIcon icon={notificationsOutline} />
-                  <span>Alertas</span>
-                </div>
-                <div className="nav-item" onClick={() => router.push('/usuario/perfil')}>
-                  <IonIcon icon={personOutline} />
-                  <span>Perfil</span>
-                </div>
-              </div>
-
-              <div className="help-box">
-                <h4>¿Necesitas ayuda?</h4>
-                <p>Revisa preguntas frecuentes o contacta al refugio.</p>
-                <IonButton expand="block" color="light" className="btn-help">
-                  Centro de ayuda
-                </IonButton>
-              </div>
+              <MenuLateralUsuario activo="/catalogo" />
             </IonCol>
 
             {/* --- CONTENIDO PRINCIPAL --- */}
@@ -82,20 +69,27 @@ const Explorar: React.FC = () => {
                     <p className="page-subtitle">Ficha completa y una siguiente opción, sin gestos de rechazo.</p>
                   </div>
                   <div className="location-badge">
-                    {ANIMALS_DATA.length} animales • 25 km
+                    {animalesFiltrados.length} animales • 25 km
                   </div>
                 </div>
 
                 <div className="search-filter-container">
                   <div className="search-bar">
-                    <IonInput placeholder="Buscar por nombre, especie o refugio"></IonInput>
+                    <IonInput placeholder="Buscar por nombre, especie o refugio" value={busqueda} onIonInput={(e) => { setBusqueda(e.detail.value ?? ''); setCurrentIndex(0); }} clearInput></IonInput>
                   </div>
-                  <IonButton fill="outline" color="dark" className="btn-filter">
+                  <IonButton fill="outline" color="dark" className="btn-filter" onClick={() => setFiltrosAbiertos(true)}>
                     Filtros
                   </IonButton>
                 </div>
               </div>
 
+              {animalesFiltrados.length === 0 ? (
+                <div className="ion-text-center ion-padding">
+                  <h2>No hay animales con esos criterios</h2>
+                  <p className="text-muted">Prueba con otra búsqueda o limpia los filtros.</p>
+                  <IonButton color="success" onClick={limpiarFiltros}>Limpiar filtros</IonButton>
+                </div>
+              ) : (
               <div className="cards-layout">
                 
                 {/* --- TARJETA PRINCIPAL DINÁMICA --- */}
@@ -163,33 +157,47 @@ const Explorar: React.FC = () => {
                 </div>
 
               </div>
+              )}
             </IonCol>
 
           </IonRow>
         </IonGrid>
 
-        {/* --- BARRA DE NAVEGACIÓN INFERIOR (Solo para móviles) --- */}
-        <div className="mobile-bottom-nav">
-          <div className="nav-item-mobile active" onClick={() => router.push('/catalogo')}>
-            <IonIcon icon={searchOutline} />
-            <span>Explorar</span>
-          </div>
-          <div className="nav-item-mobile" onClick={() => router.push('/usuario/postulaciones')}>
-            <IonIcon icon={documentTextOutline} />
-            <span>Postulaciones</span>
-          </div>
-          <div className="nav-item-mobile" onClick={() => router.push('/usuario/alertas')}>
-            <IonIcon icon={notificationsOutline} />
-            <span>Alertas</span>
-          </div>
-          <div className="nav-item-mobile" onClick={() => router.push('/usuario/perfil')}>
-            <IonIcon icon={personOutline} />
-            <span>Perfil</span>
-          </div>
-        </div>
+
+        <IonModal isOpen={filtrosAbiertos} onDidDismiss={() => setFiltrosAbiertos(false)} initialBreakpoint={0.6} breakpoints={[0, 0.6, 1]}>
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle>Filtros</IonTitle>
+              <IonButtons slot="end">
+                <IonButton onClick={() => setFiltrosAbiertos(false)}>Listo</IonButton>
+              </IonButtons>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent className="ion-padding">
+            <IonList>
+              <IonItem>
+                <IonSelect label="Especie" value={especie} onIonChange={(e) => { setEspecie(e.detail.value); setCurrentIndex(0); }}>
+                  <IonSelectOption value="TODAS">Todas</IonSelectOption>
+                  <IonSelectOption value="PERRO">Perro</IonSelectOption>
+                  <IonSelectOption value="GATO">Gato</IonSelectOption>
+                </IonSelect>
+              </IonItem>
+              <IonItem>
+                <IonSelect label="Tamaño" value={tamano} onIonChange={(e) => { setTamano(e.detail.value); setCurrentIndex(0); }}>
+                  <IonSelectOption value="TODOS">Todos</IonSelectOption>
+                  <IonSelectOption value="PEQUEÑO">Pequeño</IonSelectOption>
+                  <IonSelectOption value="MEDIANO">Mediano</IonSelectOption>
+                  <IonSelectOption value="GRANDE">Grande</IonSelectOption>
+                </IonSelect>
+              </IonItem>
+            </IonList>
+            <IonButton expand="block" fill="outline" color="dark" onClick={limpiarFiltros}>Limpiar filtros</IonButton>
+          </IonContent>
+        </IonModal>
 
         <IonToast isOpen={mensaje !== ''} message={mensaje} duration={2000} onDidDismiss={() => setMensaje('')} />
       </IonContent>
+      <BarraInferiorUsuario activo="/catalogo" />
     </IonPage>
   );
 };
