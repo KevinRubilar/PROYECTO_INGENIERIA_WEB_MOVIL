@@ -1281,10 +1281,39 @@ La arquitectura frontend se organiza para crecer sin reestructurar la navegació
 
 El prototipo fue construido manualmente por el equipo en Figma, con versiones móvil y web y conexiones de prototipado entre pantallas.
 
-- **Enlace al prototipo manual evaluable:** [Ver prototipo EP 1.3 de PatitasGo en Figma](https://www.figma.com/design/5zoQ54KdMQRZyJKPDWX6cI/EP1.3-PatigasGo?node-id=0-1&t=L9dP58QNvqlk4Q2d-1)
+- **Prototipo navegable:** [Ver prototipo EP 1.3 de PatitasGo](https://www.figma.com/proto/FWPPEeLuI3yQqZCnTdKkN4/EP1.3-PatigasGo?page-id=0%3A1&starting-point-node-id=1%3A7&scaling=min-zoom&content-scaling=fixed&show-proto-sidebar=1)
+- **Archivo de diseño:** [Ver archivo en Figma](https://www.figma.com/design/FWPPEeLuI3yQqZCnTdKkN4/EP1.3-PatigasGo)
 
+### Flujos del prototipo
 
-Las pantallas consideradas en el diseño son:
+El panel lateral del prototipo permite elegir uno de cuatro puntos de inicio:
+
+| Flujo | Recorrido |
+|---|---|
+| Usuario · móvil | Iniciar sesión → validación de errores → Explorar → Filtros → Detalle del animal → Formulario de postulación → Postulación enviada → Explorar |
+| Usuario · web | El mismo recorrido en escritorio, con menú lateral |
+| Refugio · web | Solicitudes ↔ Animales ↔ Agenda general, y Cerrar sesión |
+| Refugio · móvil | Solicitudes ↔ Animales, y Agenda desde la tarjeta Entrevistas |
+
+### Pantallas diseñadas en Figma
+
+Cada pantalla tiene versión móvil y web.
+
+| N.º | Pantalla | Requerimiento |
+|---|---|---|
+| 01 | Iniciar sesión y su variante con errores de validación | Acceso |
+| 02 | Crear cuenta y su variante con validación de contraseña | Acceso |
+| 03 | Explorar y filtrar, con filtros como ventana emergente | RF-01 |
+| 04 | Detalle del animal | RF-01 |
+| 05 | Formulario de postulación | RF-02 |
+| 06A | Postulación enviada | RF-02 |
+| 08 | Gestión de solicitudes | RF-03 |
+| 09 | Gestión de animales | RF-04 |
+| 14 | Agenda general | RF-08 |
+
+### Pantallas planificadas
+
+El listado completo de pantallas que contempla el sistema es el siguiente. Las que no aparecen en la tabla anterior se diseñarán en las próximas entregas:
 
 1. Inicio de sesión.
 2. Registro.
