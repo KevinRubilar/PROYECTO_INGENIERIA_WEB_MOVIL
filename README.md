@@ -55,7 +55,7 @@ El detalle de cada funcionalidad está en [Requerimientos](#requerimientos).
 | Francisca Ponce | Estructura inicial del proyecto Ionic + React, pantallas de autenticación, Explorar, Postular y panel administrativo (Solicitudes, Animales y Agenda). |
 | Kevin Rubilar | Documentación del README: requerimientos, flujos de tareas, arquitectura de navegación, credenciales de prueba y correcciones de la EP1. |
 | Elías Bravo | Integración de archivos del frontend y configuración de rutas en `App.tsx`. |
-| Tomás Guerra | *Por confirmar por el equipo.* |
+| Tomás Guerra | Diseño UI/UX en Figma: pantallas móvil y web, coherencia visual, prototipo navegable con sus flujos y corrección del Figma según la retroalimentación de la EP1. |
 
 ---
 
